@@ -13,7 +13,7 @@ interface TreeMapProps {
   data: DataItem[];
 }
 
-const classColors = {
+const classColors: { [key: string]: string } = {
   hokkaido: '#ff9999',
   tohoku: '#66b3ff',
   kanto: '#99ff99',
@@ -49,16 +49,16 @@ const TreeMap: React.FC<TreeMapProps> = ({ data }) => {
         .attr('width', width)
         .attr('height', height)
         .selectAll('g')
-        .data(root.leaves())
+        .data(root.leaves() as any)  // 型キャスト
         .enter()
         .append('g')
-        .attr('transform', d => `translate(${d.x0},${d.y0})`);
+        .attr('transform', d => `translate(${(d as any).x0},${(d as any).y0})`);
 
       nodes.append('rect')
         .attr('id', d => (d.data.title))
-        .attr('width', d => d.x1 - d.x0)
-        .attr('height', d => d.y1 - d.y0)
-        .attr('fill', d => classColors[d.data.class])
+        .attr('width', d => (d as any).x1 - (d as any).x0)
+        .attr('height', d => (d as any).y1 - (d as any).y0)
+        .attr('fill', d => classColors[d.data.class as string])
         .on('click', (event, d) => setSelectedContent(d.data.contents));
 
       nodes.append('text')
