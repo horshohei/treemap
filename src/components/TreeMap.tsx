@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 
@@ -35,11 +33,11 @@ const TreeMap: React.FC<TreeMapProps> = ({ data }) => {
       const width = 800;
       const height = 600;
 
-      const root = d3.hierarchy<{ children: DataItem[] }>({ children: data })
+      const root = d3.hierarchy<{ children: DataItem[] } & DataItem>({ children: data } as any)
         .sum(d => d.volume)
         .sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
 
-      const treemap = d3.treemap<{ children: DataItem[] }>()
+      const treemap = d3.treemap<{ children: DataItem[] } & DataItem>()
         .size([width, height])
         .padding(1)
         .round(true);
